@@ -8,7 +8,7 @@ The goal of the project is to make and train a fully functioning neural network 
 ## How will it be done?
 To maximize learning the project will be created from scratch using Python and Numpys. Tensorflow etc. will not be used for the model creation and training since it would literally be like 5 lines of code. Model will be trained on the [MNIST](http://yann.lecun.com/exdb/mnist/) dataset consisting of labeled pictures of handwritten digits.
 
-## The architecture of the neural network.
+## The architecture of the neural network
 You can think of the neural network as a function. You give it <b>x</b> and it spits out <b>y</b>.
 
 The neural network will be structured like the following:
@@ -16,7 +16,7 @@ The neural network will be structured like the following:
 - The "hidden layers". The number of hidden layers and the number of neurons in them will be modified during the project to achieve a more accurate model, but for starters let's take 2 hidden layers with 16 neurons each. These hidden layers try to detect different patterns of the input. So for example the first hidden layer could try to recognize the edges of the the input, meaning we break the input into subproblems and the second layer could try to recognize the patterns that these edges make. The activations in one layer will determine the activations in the layer after it. So if the input layer activates the first hidden layers neurons that correspond to the relevant edges, then the first hidden layer would activate the second hidden layers neurons recognizing the relevant patterns of the edges and then the second hidden layer would activate the output layers neurons associated with the patterns. It doesn't actually do it in this way but it's an easy way of thinking of what it tries to do.
 - The output layer. This is where we'll get the answer for what the neural network thinks that the given input is. This is done by taking the neuron with the biggest activation and the number corresponding to that neuron. So for a simple example let's take a situation where all of the other neurons have an activation of 0.01, but neuron number 10 has the activation of 0.98. In this situation the neural network is saying that it thinks that the input it saw is the digit 9. In our case the output layer consists of 10 neurons, since we have the possible outcomes of 0-9.
 
-## Cost function.
+## Cost function
 Each neuron is connected to all of the neurons in the previous layer. The weights and the weighted sum can be thought of as the "strength" between these connections. The bias indicates if the neuron is active or not. Now at first these weights and biases will be chosen at random and will need to be adjusted as we go. As you can imagine this randomness means that the network will not perform well at first.
 
 This is where the cost function comes into play. It's a way for us to tell the computer that it's answer was bad. The smaller the cost the better the network is performing and vise versa.
@@ -38,7 +38,7 @@ Cost of 3 = (0.5 - 0)^2 + (0.5 - 0)^2 + (0.5 - 0)^2 + (0.24 - 1)^2 + (0.5 - 0)^2
 
 This same process is then repeated for all the training samples and we take the average of the results to get the total cost of the network.
 
-## Gradient descent.
+## Gradient descent
 Gradient descent is the way used to minimize this cost function. You can think of it as a way of walking down a hill to the lowest local point. It tries to find the local minimum of the cost function by taking "steps" into each direction until it finds the minimum point. This is done by calculating the gradient of a function which gives us the the steepest direction to increase cost. Since the gradient gives us the direction to increase the cost the most we need to take the negative of it to lower it the most.
 
 So to minimize the cost we need to compute the gradient direction, take a small step in to the other direction and repeat this over and over again until we find the minimum value.
