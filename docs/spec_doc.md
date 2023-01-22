@@ -53,3 +53,6 @@ Now we do this same step for each of the layers and this is called propagating b
 If we do this for all of the tens of thousands of training examples it would take alot of computing power and would be super slow, so instead we'll use something called stochastic gradient descent. This is where we randomly divide the data into "mini-batches" and compute each step for the mini-batch.
 
 Time complexity for this depends heavily on the amount of layers in the network and the amount of neurons in these layers. The plan is to have 4 layers with 784 neurons in the input layer, 16 neurons in each of the two hidden layers and 10 neurons in the output layer. This would give us a big O notation of <b>O(nt*(ij+2j+jk))</b>, where <b>n</b> is the number of epochs (training rounds), <b>t</b> is the number of training examples and <b>i, j and k</b> represent the amount of neurons in each of the layers in the network.
+
+## Course details
+Im a computer science student at the University of Helsinki. I'll be completing my project in Python, but I have experience in other languages as well so peer reviewing projects in other languages is no issue.
