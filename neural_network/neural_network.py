@@ -19,6 +19,6 @@ class NeuralNetwork:
 
         return weights, biases
 
-nn = NeuralNetwork([784,16,10])
+nn = NeuralNetwork([784,16,16,10])
 print(len(nn.biases))
 print(len(nn.weights))
