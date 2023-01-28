@@ -1,5 +1,5 @@
 import pytest
-from neural_network.neural_network import NeuralNetwork
+from neural_network import NeuralNetwork
 
 def test_init_neural_network():
     """
