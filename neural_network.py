@@ -24,10 +24,16 @@ class NeuralNetwork:
     def stochastic_gradient_descent(self, training_data, epochs, mini_batch_size, learning_rate):
         """
         This is main part in making the neural network learn
-        Uses mini-batch stochastic gradient descent
+
+        Uses mini-batch stochastic gradient descent for
+        faster computation
+
         Epochs is the number of training rounds
+
         Learning rate determines the size of the "step"
         we take when moving towards the minimum loss
+        aka how fast or slow we move towards the optimal
+        weights and biases
         """
 
         training_data_length = len(training_data)
@@ -38,7 +44,29 @@ class NeuralNetwork:
                 training_data[j:j + mini_batch_size]
                 for j in range(0, training_data_length, mini_batch_size)
             ]
+            for bacth in mini_batches:
+                self.update_weights_and_biases(bacth, learning_rate)
 
+    def update_weights_and_biases(self, batch, learning_rate):
+        """
+        This updates the NN's weights and biases
+        by computing the gradient for the given
+        mini-batch
+        """
+
+        # Initialize 2 lists to store the changes to the weights and biases
+        total_change_bias = [np.zeros(b.shape) for b in self.biases]
+        total_change_weight = [np.zeros(w.shape) for w in self.weights]
+
+        for picture, number in batch:
+            # Calculate the change in weight and bias for a single training example with backrpopagation
+            change_to_weight, change_to_bias = self.backpropagation(picture, number)
+
+    def backpropagation(self, picture, number):
+        """
+        This will be the backrpopagation algorithm
+        """
+        pass
 
 # Test NN
 nn = NeuralNetwork([784,16,16,10])
