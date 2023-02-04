@@ -86,7 +86,16 @@ class NeuralNetwork:
             activations.append(activation)
 
     def sigmoid(self, z_vector):
+        """
+        Sigmoid function
+        """
         return (1.0/(1.0 + np.exp(-z_vector)))
+
+    def sigmoid_prime(self, z_vector):
+        """
+        Sigmoid functions derivative
+        """
+        return self.sigmoid(z_vector)*(1-self.sigmoid(z_vector))
 
 
 # Test NN
