@@ -66,10 +66,27 @@ class NeuralNetwork:
         """
         This will be the backrpopagation algorithm
         """
-        pass
+        total_change_bias = [np.zeros(b.shape) for b in self.biases]
+        total_change_weight = [np.zeros(w.shape) for w in self.weights]
+
+        activation = picture.flatten()
+
+        # Store all the activations to a list
+        activations = [picture]
+
+        # Store all the z vectors to a list
+        z_vectors = []
+
+        biases_and_weights = zip(self.biases, self.weights)
+        for bias, weight in biases_and_weights:
+            z_vector = np.dot(weight.T, activation) + bias
+            z_vectors.append(z_vector)
+
+            activation = (1.0/(1.0 + np.exp(-z_vector)))
+            activations.append(activation)
 
 # Test NN
-nn = NeuralNetwork([784,16,16,10])
+nn = NeuralNetwork([784, 16, 10])
 (x_train, y_train), (x_test, y_test) = load_mnist_dataset()
 training_data = list(zip(x_train, y_train))
-nn.stochastic_gradient_descent(training_data, 1, 30, 3.0)
+nn.stochastic_gradient_descent(list(training_data), 1, 30, 3.0)
