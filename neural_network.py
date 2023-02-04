@@ -82,8 +82,12 @@ class NeuralNetwork:
             z_vector = np.dot(weight.T, activation) + bias
             z_vectors.append(z_vector)
 
-            activation = (1.0/(1.0 + np.exp(-z_vector)))
+            activation = self.sigmoid(z_vector)
             activations.append(activation)
+
+    def sigmoid(self, z_vector):
+        return (1.0/(1.0 + np.exp(-z_vector)))
+
 
 # Test NN
 nn = NeuralNetwork([784, 16, 10])
