@@ -68,8 +68,20 @@ class NeuralNetwork:
         """
         total_change_bias = [np.zeros(b.shape) for b in self.biases]
         total_change_weight = [np.zeros(w.shape) for w in self.weights]
+        # Feedforward
+        activations, z_vectors = self.feedforward(picture, number)
+        
+        # Calculate the gradient of the cost function
+        error = self.cost_derivative(activations[-1], number)
 
-        activation = picture.flatten()
+
+    def feedforward(self, picture, number):
+        """
+        Feedforward algorithm, computes the output of the
+        neural network for a given input AKA makes a prediction
+        of what the given input is
+        """
+        activation = picture
 
         # Store all the activations to a list
         activations = [picture]
@@ -82,12 +94,22 @@ class NeuralNetwork:
             z_vector = np.dot(weight.T, activation) + bias
             z_vectors.append(z_vector)
 
+            # Apply the activation function
             activation = self.sigmoid(z_vector)
             activations.append(activation)
 
+        return activations, z_vectors
+
+    def cost_derivative(self, output_layer_activations, target_values):
+        """
+        Gradient of the cost function, calculates the difference
+        between the predicted output and target values
+        """
+        return (output_layer_activations - target_values)
+
     def sigmoid(self, z_vector):
         """
-        Sigmoid function
+        Sigmoid activation function
         """
         return (1.0/(1.0 + np.exp(-z_vector)))
 
