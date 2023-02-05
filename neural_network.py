@@ -13,16 +13,13 @@ class NeuralNetwork:
         """
         Initialize weights and biases, ignore input layer
         """
-        biases = [np.random.randn(y, 1) for y in self.layer_sizes[1:]]
-
-        #weights = []
-        #for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:]):
-        #    weights.append(np.random.randn(x,y)/np.sqrt(x))
-        weights = [np.random.randn(y, x) for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:])]
+        #np.random.rand(y, x) - 0.5
+        biases = [np.random.rand(y, 1) - 0.5 for y in self.layer_sizes[1:]]
+        weights = [np.random.normal(scale=0.5, size=(y, x)) for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:])]
 
         return weights, biases
 
-    def stochastic_gradient_descent(self, training_data, epochs, mini_batch_size, learning_rate):
+    def stochastic_gradient_descent(self, training_data, epochs, mini_batch_size, learning_rate, test_data):
         """
         This is main part in making the neural network learn
 
@@ -36,6 +33,8 @@ class NeuralNetwork:
         aka how fast or slow we move towards the optimal
         weights and biases
         """
+        if test_data:
+            test_data_length = len(test_data)
 
         training_data_length = len(training_data)
         for i in range(epochs):
@@ -47,7 +46,9 @@ class NeuralNetwork:
             ]
             for bacth in mini_batches:
                 self.update_weights_and_biases(bacth, learning_rate)
-            print(f"Epoch {i} completed")
+            print(f"Epoch {i}")
+            if test_data:
+                print(f"{self.evaluate_model(test_data)} / {test_data_length}")
 
     def update_weights_and_biases(self, batch, learning_rate):
         """
@@ -77,31 +78,6 @@ class NeuralNetwork:
         change_to_bias = [np.zeros(b.shape) for b in self.biases]
         change_to_weight = [np.zeros(w.shape) for w in self.weights]
 
-        # Feedforward
-        activations, z_vectors = self.feedforward(picture, number)
-        
-        # Calculate the gradient of the cost function
-        error = self.cost_derivative(activations[-1], number) * self.sigmoid_prime(z_vectors[-1])
-
-        # Modify the weights and biases in connections to the output layer
-        change_to_bias[-1] = error
-        change_to_weight[-1] = np.dot(error, activations[-2].T)
-
-        for i in range(2, self.number_of_layers):
-            z_vector = z_vectors[-i]
-            sigmoid_prime = self.sigmoid_prime(z_vector)
-            error = np.dot(self.weights[-i+1].T, error) + sigmoid_prime
-            change_to_bias[-i] = error
-            change_to_weight[-i] = np.dot(error, activations[-i-1].T)
-
-        return (change_to_bias, change_to_weight)
-
-    def feedforward(self, picture, number):
-        """
-        Feedforward algorithm, computes the output of the
-        neural network for a given input AKA makes a prediction
-        of what the given input is
-        """
         activation = picture
 
         # Store all the activations to a list
@@ -116,10 +92,41 @@ class NeuralNetwork:
             z_vectors.append(z_vector)
 
             # Apply the activation function
-            activation = self.sigmoid(z_vector)
+            activation = sigmoid(z_vector)
             activations.append(activation)
+ 
+        # Calculate the gradient of the cost function
+        error = self.cost_derivative(activations[-1], number) * sigmoid_prime(z_vectors[-1])
 
-        return activations, z_vectors
+        # Modify the weights and biases in connections to the output layer
+        change_to_bias[-1] = error
+        change_to_weight[-1] = np.dot(error, activations[-2].T)
+
+        for i in range(2, self.number_of_layers):
+            z_vector = z_vectors[-i]
+            sp = sigmoid_prime(z_vector)
+            error = np.dot(self.weights[-i+1].T, error) + sp
+            change_to_bias[-i] = error
+            change_to_weight[-i] = np.dot(error, activations[-i-1].T)
+
+        return (change_to_bias, change_to_weight)
+
+    def feedforward(self, a):
+        """
+        Returns the networks output for a given input
+        """
+        for b, w in zip(self.biases, self.weights):
+            a = sigmoid(np.dot(w, a)+b)
+        return a
+
+    def evaluate_model(self, test_data):
+        """
+        Get the number of test inputs that the neural
+        network recognizes correctly
+        """
+        test_results = [(np.argmax(self.feedforward(x)), np.argmax(y))
+                        for (x, y) in test_data]
+        return sum(int(x == y) for (x, y) in test_results)
 
     def cost_derivative(self, output_layer_activations, target_values):
         """
@@ -128,21 +135,24 @@ class NeuralNetwork:
         """
         return (output_layer_activations - target_values)
 
-    def sigmoid(self, z_vector):
-        """
-        Sigmoid activation function
-        """
-        return (1.0/(1.0 + np.exp(-z_vector)))
 
-    def sigmoid_prime(self, z_vector):
-        """
-        Sigmoid functions derivative
-        """
-        return self.sigmoid(z_vector)*(1-self.sigmoid(z_vector))
+# Activation functions
+def sigmoid(z_vector):
+    """
+    Sigmoid activation function
+    """
+    return (1.0/(1.0 + np.exp(-z_vector)))
+
+def sigmoid_prime(z_vector):
+    """
+    Sigmoid functions derivative
+    """
+    return sigmoid(z_vector)*(1-sigmoid(z_vector))
 
 
 # Test NN
-nn = NeuralNetwork([784, 16, 10])
-(x_train, y_train), (x_test, y_test) = load_mnist_dataset()
-training_data = list(zip(x_train, y_train))
-nn.stochastic_gradient_descent(list(training_data), 5, 30, 3.0)
+#nn = NeuralNetwork([784, 128, 128, 10])
+#(x_train, y_train), (x_test, y_test) = load_mnist_dataset()
+#training_data = list(zip(x_train, y_train))
+#test_data = list(zip(x_test, y_test))
+#nn.stochastic_gradient_descent(list(training_data), 100, 64, 0.3, list(test_data))
