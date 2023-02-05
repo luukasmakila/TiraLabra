@@ -4,6 +4,7 @@ Implementing a neural network to recognize handwritten digits.
 
 ## Docs
 - [Project specification docs](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/spec_doc.md)
+- [Test coverage](https://luukasmakila.github.io/neural-network-to-recognize-digits/)
 
 ## Weekly reports
 - [Week 1](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_1_report.md)
