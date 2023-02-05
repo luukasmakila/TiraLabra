@@ -13,11 +13,12 @@ class NeuralNetwork:
         """
         Initialize weights and biases, ignore input layer
         """
-        biases = [np.random.randn(i, 1) for i in self.layer_sizes[1:]]
+        biases = [np.random.randn(y, 1) for y in self.layer_sizes[1:]]
 
-        weights = []
-        for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:]):
-            weights.append(np.random.randn(x,y)/np.sqrt(x))
+        #weights = []
+        #for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:]):
+        #    weights.append(np.random.randn(x,y)/np.sqrt(x))
+        weights = [np.random.randn(y, x) for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:])]
 
         return weights, biases
 
@@ -46,6 +47,7 @@ class NeuralNetwork:
             ]
             for bacth in mini_batches:
                 self.update_weights_and_biases(bacth, learning_rate)
+            print(f"Epoch {i} completed")
 
     def update_weights_and_biases(self, batch, learning_rate):
         """
@@ -61,13 +63,20 @@ class NeuralNetwork:
         for picture, number in batch:
             # Calculate the change in weight and bias for a single training example with backrpopagation
             change_to_bias, change_to_weight = self.backpropagation(picture, number)
+            total_change_bias = [tcb + ctb for tcb, ctb in zip(total_change_bias, change_to_bias)]
+            total_change_weight = [tcw + ctw for tcw, ctw in zip(total_change_weight, change_to_weight)]
+
+        # Modify the weights and biases
+        self.biases = [b - (learning_rate/len(batch)) * tcb for b, tcb in zip(self.biases, total_change_bias)]
+        self.weights = [w - (learning_rate/len(batch)) * tcw for w, tcw in zip(self.weights, total_change_weight)]
 
     def backpropagation(self, picture, number):
         """
         This will be the backrpopagation algorithm
         """
-        total_change_bias = [np.zeros(b.shape) for b in self.biases]
-        total_change_weight = [np.zeros(w.shape) for w in self.weights]
+        change_to_bias = [np.zeros(b.shape) for b in self.biases]
+        change_to_weight = [np.zeros(w.shape) for w in self.weights]
+
         # Feedforward
         activations, z_vectors = self.feedforward(picture, number)
         
@@ -75,17 +84,17 @@ class NeuralNetwork:
         error = self.cost_derivative(activations[-1], number) * self.sigmoid_prime(z_vectors[-1])
 
         # Modify the weights and biases in connections to the output layer
-        total_change_bias[-1] = error
-        total_change_weight[-1] = np.dot(error, activations[-2].T)
+        change_to_bias[-1] = error
+        change_to_weight[-1] = np.dot(error, activations[-2].T)
 
         for i in range(2, self.number_of_layers):
             z_vector = z_vectors[-i]
             sigmoid_prime = self.sigmoid_prime(z_vector)
-            error = np.dot(self.weights[-i+1], error) + sigmoid_prime
-            total_change_bias[-i] = error
-            total_change_weight[-i] = np.dot(error, activations[-i-1].T)
+            error = np.dot(self.weights[-i+1].T, error) + sigmoid_prime
+            change_to_bias[-i] = error
+            change_to_weight[-i] = np.dot(error, activations[-i-1].T)
 
-        return (total_change_bias, total_change_weight)
+        return (change_to_bias, change_to_weight)
 
     def feedforward(self, picture, number):
         """
@@ -103,7 +112,7 @@ class NeuralNetwork:
 
         biases_and_weights = zip(self.biases, self.weights)
         for bias, weight in biases_and_weights:
-            z_vector = np.dot(weight.T, activation) + bias
+            z_vector = np.dot(weight, activation) + bias
             z_vectors.append(z_vector)
 
             # Apply the activation function
@@ -136,4 +145,4 @@ class NeuralNetwork:
 nn = NeuralNetwork([784, 16, 10])
 (x_train, y_train), (x_test, y_test) = load_mnist_dataset()
 training_data = list(zip(x_train, y_train))
-nn.stochastic_gradient_descent(list(training_data), 1, 30, 3.0)
+nn.stochastic_gradient_descent(list(training_data), 5, 30, 3.0)
