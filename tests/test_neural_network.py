@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from neural_network import NeuralNetwork, sigmoid, sigmoid_prime
 
+
 def test_init_neural_network():
     """
     Test initializing the Neural Network class
@@ -9,6 +10,21 @@ def test_init_neural_network():
     nn = NeuralNetwork([784, 16, 16, 10])
     assert len(nn.weights) == 3
     assert len(nn.biases) == 3
+
+
+def test_sigmoid():
+    # Test the sigmoid function with different values of z_vector
+    assert np.isclose(sigmoid(0), 0.5, rtol=1e-05, atol=1e-08), "Test case 1 failed"
+    assert np.isclose(sigmoid(-100), 0, rtol=1e-05, atol=1e-08), "Test case 2 failed"
+    assert np.isclose(sigmoid(100), 1, rtol=1e-05, atol=1e-08), "Test case 3 failed"
+
+
+def test_sigmoid_prime():
+    # Test the sigmoid_prime function with different values of z_vector
+    assert np.isclose(sigmoid_prime(0), 0.25, rtol=1e-05, atol=1e-08), "Test case 1 failed"
+    assert np.isclose(sigmoid_prime(-100), 0, rtol=1e-05, atol=1e-08), "Test case 2 failed"
+    assert np.isclose(sigmoid_prime(100), 0, rtol=1e-05, atol=1e-08), "Test case 3 failed"
+
 
 def test_feedforward():
     # Set up a mock neural network with test biases and weights
@@ -27,3 +43,5 @@ def test_feedforward():
     # Compare the expected result to the result of the feedforward function
     result = mock_network.feedforward(test_input)
     assert np.allclose(result, expected_result), f"Expected {expected_result}, but got {result}"
+
+
