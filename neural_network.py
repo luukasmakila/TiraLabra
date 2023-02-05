@@ -60,7 +60,7 @@ class NeuralNetwork:
 
         for picture, number in batch:
             # Calculate the change in weight and bias for a single training example with backrpopagation
-            change_to_weight, change_to_bias = self.backpropagation(picture, number)
+            change_to_bias, change_to_weight = self.backpropagation(picture, number)
 
     def backpropagation(self, picture, number):
         """
@@ -72,8 +72,20 @@ class NeuralNetwork:
         activations, z_vectors = self.feedforward(picture, number)
         
         # Calculate the gradient of the cost function
-        error = self.cost_derivative(activations[-1], number)
+        error = self.cost_derivative(activations[-1], number) * self.sigmoid_prime(z_vectors[-1])
 
+        # Modify the weights and biases in connections to the output layer
+        total_change_bias[-1] = error
+        total_change_weight[-1] = np.dot(error, activations[-2].T)
+
+        for i in range(2, self.number_of_layers):
+            z_vector = z_vectors[-i]
+            sigmoid_prime = self.sigmoid_prime(z_vector)
+            error = np.dot(self.weights[-i+1], error) + sigmoid_prime
+            total_change_bias[-i] = error
+            total_change_weight[-i] = np.dot(error, activations[-i-1].T)
+
+        return (total_change_bias, total_change_weight)
 
     def feedforward(self, picture, number):
         """
