@@ -151,8 +151,8 @@ def sigmoid_prime(z_vector):
 
 
 # Test NN
-#nn = NeuralNetwork([784, 128, 128, 10])
-#(x_train, y_train), (x_test, y_test) = load_mnist_dataset()
-#training_data = list(zip(x_train, y_train))
-#test_data = list(zip(x_test, y_test))
-#nn.stochastic_gradient_descent(list(training_data), 100, 64, 0.3, list(test_data))
+nn = NeuralNetwork([784, 128, 128, 10])
+(x_train, y_train), (x_test, y_test) = load_mnist_dataset()
+training_data = list(zip(x_train, y_train))
+test_data = list(zip(x_test, y_test))
+nn.stochastic_gradient_descent(list(training_data), 20, 64, 0.3, list(test_data))
