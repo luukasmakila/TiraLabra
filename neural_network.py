@@ -13,7 +13,6 @@ class NeuralNetwork:
         """
         Initialize weights and biases, ignore input layer
         """
-        #np.random.rand(y, x) - 0.5
         biases = [np.random.rand(y, 1) - 0.5 for y in self.layer_sizes[1:]]
         weights = [np.random.normal(scale=0.5, size=(y, x)) for x, y in zip(self.layer_sizes[:-1], self.layer_sizes[1:])]
 
@@ -22,7 +21,6 @@ class NeuralNetwork:
     def stochastic_gradient_descent(self, training_data, epochs, mini_batch_size, learning_rate, test_data):
         """
         This is main part in making the neural network learn
-
         Uses mini-batch stochastic gradient descent for
         faster computation
 
@@ -71,30 +69,33 @@ class NeuralNetwork:
         self.biases = [b - (learning_rate/len(batch)) * tcb for b, tcb in zip(self.biases, total_change_bias)]
         self.weights = [w - (learning_rate/len(batch)) * tcw for w, tcw in zip(self.weights, total_change_weight)]
 
+    def forwardpropagation(self, picture):
+        """
+        This is the forwardpropagation algorithm
+        """
+        activation = picture
+        activations = [picture]
+
+        z_vectors = []
+
+        for weight, bias in zip(self.weights, self.biases):
+            z_vector = np.dot(weight, activation) + bias
+            z_vectors.append(z_vector)
+
+            activation = sigmoid(z_vector)
+            activations.append(activation)
+
+        return activations, z_vectors
+
     def backpropagation(self, picture, number):
         """
-        This will be the backrpopagation algorithm
+        This the backpropagation algorithm
         """
         change_to_bias = [np.zeros(b.shape) for b in self.biases]
         change_to_weight = [np.zeros(w.shape) for w in self.weights]
 
-        activation = picture
+        activations, z_vectors = self.forwardpropagation(picture)
 
-        # Store all the activations to a list
-        activations = [picture]
-
-        # Store all the z vectors to a list
-        z_vectors = []
-
-        biases_and_weights = zip(self.biases, self.weights)
-        for bias, weight in biases_and_weights:
-            z_vector = np.dot(weight, activation) + bias
-            z_vectors.append(z_vector)
-
-            # Apply the activation function
-            activation = sigmoid(z_vector)
-            activations.append(activation)
- 
         # Calculate the gradient of the cost function
         error = self.cost_derivative(activations[-1], number) * sigmoid_prime(z_vectors[-1])
 
@@ -105,7 +106,7 @@ class NeuralNetwork:
         for i in range(2, self.number_of_layers):
             z_vector = z_vectors[-i]
             sp = sigmoid_prime(z_vector)
-            error = np.dot(self.weights[-i+1].T, error) + sp
+            error = np.dot(self.weights[-i+1].T, error) * sp
             change_to_bias[-i] = error
             change_to_weight[-i] = np.dot(error, activations[-i-1].T)
 
@@ -149,10 +150,9 @@ def sigmoid_prime(z_vector):
     """
     return sigmoid(z_vector)*(1-sigmoid(z_vector))
 
-
 # Test NN
-nn = NeuralNetwork([784, 128, 128, 10])
+nn = NeuralNetwork([784, 100, 10])
 (x_train, y_train), (x_test, y_test) = load_mnist_dataset()
 training_data = list(zip(x_train, y_train))
 test_data = list(zip(x_test, y_test))
-nn.stochastic_gradient_descent(list(training_data), 20, 64, 0.3, list(test_data))
+nn.stochastic_gradient_descent(list(training_data), 30, 10, 3.0, list(test_data))
