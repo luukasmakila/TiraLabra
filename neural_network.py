@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 from helpers.load_data import load_mnist_dataset
 
 class NeuralNetwork:
@@ -112,21 +113,22 @@ class NeuralNetwork:
 
         return (change_to_bias, change_to_weight)
 
-    def feedforward(self, a):
+    def feedforward(self, x):
         """
         Returns the networks output for a given input
         """
         for b, w in zip(self.biases, self.weights):
-            a = sigmoid(np.dot(w, a)+b)
-        return a
+            x = sigmoid(np.dot(w, x)+b)
+        return x
 
     def evaluate_model(self, test_data):
         """
         Get the number of test inputs that the neural
         network recognizes correctly
         """
-        test_results = [(np.argmax(self.feedforward(x)), np.argmax(y))
-                        for (x, y) in test_data]
+        test_results = []
+        for (x, y) in test_data:
+            test_results.append((np.argmax(self.feedforward(x)), np.argmax(y)))
         return sum(int(x == y) for (x, y) in test_results)
 
     def cost_derivative(self, output_layer_activations, target_values):
@@ -135,6 +137,23 @@ class NeuralNetwork:
         between the predicted output and target values
         """
         return (output_layer_activations - target_values)
+
+    def visualize(self, data):
+        """
+        Method to visualize the predictions made by the neural network
+        """
+
+        for x, y in data:
+            activations = self.feedforward(x)
+            predictions = activations
+
+            #if np.argmax(predictions) != np.argmax(y):
+            plt.imshow(x.reshape(28, 28), cmap='gray')
+            plt.title(f'Prediction: {np.argmax(predictions)}, Real label: {np.argmax(y)}')
+
+            plt.show()
+            # Display the whole vector of predictions
+            print(f'Prediction vector: {predictions}')
 
 
 # Activation functions
@@ -150,9 +169,11 @@ def sigmoid_prime(z_vector):
     """
     return sigmoid(z_vector)*(1-sigmoid(z_vector))
 
+
 # Test NN
 nn = NeuralNetwork([784, 100, 10])
 (x_train, y_train), (x_test, y_test) = load_mnist_dataset()
 training_data = list(zip(x_train, y_train))
 test_data = list(zip(x_test, y_test))
-nn.stochastic_gradient_descent(list(training_data), 30, 10, 3.0, list(test_data))
+nn.stochastic_gradient_descent(list(training_data), 10, 10, 3.0, list(test_data))
+nn.visualize(list(test_data))
