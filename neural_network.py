@@ -46,8 +46,9 @@ class NeuralNetwork:
             for bacth in mini_batches:
                 self.update_weights_and_biases(bacth, learning_rate)
             print(f"Epoch {i}")
-            if test_data:
-                print(f"{self.evaluate_model(test_data)} / {test_data_length}")
+
+        if test_data:
+            print(f"Accuracy on unseen data: {self.evaluate_model(test_data)} / {test_data_length}")
 
     def update_weights_and_biases(self, batch, learning_rate):
         """
@@ -152,8 +153,6 @@ class NeuralNetwork:
             plt.title(f'Prediction: {np.argmax(predictions)}, Real label: {np.argmax(y)}')
 
             plt.show()
-            # Display the whole vector of predictions
-            print(f'Prediction vector: {predictions}')
 
 
 # Activation functions
@@ -175,5 +174,5 @@ nn = NeuralNetwork([784, 100, 10])
 (x_train, y_train), (x_test, y_test) = load_mnist_dataset()
 training_data = list(zip(x_train, y_train))
 test_data = list(zip(x_test, y_test))
-nn.stochastic_gradient_descent(list(training_data), 10, 10, 3.0, list(test_data))
+nn.stochastic_gradient_descent(training_data, 30, 10, 3.0, test_data)
 nn.visualize(list(test_data))
