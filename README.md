@@ -12,9 +12,12 @@ pip install -r requirements.txt
 
 Run the following to start the program:
 ```console
-python neural_network.py
+python demo.py
 ```
 
+Let the program train the model and once the training is done, window will pop up where you can start visualizing the networks predicitions against the real labels.
+
+Architecture of the network and other hyperparameters can be modified in the demo.py
 
 ## Docs
 - [Project specification docs](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/spec_doc.md)

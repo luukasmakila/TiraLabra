@@ -166,12 +166,3 @@ def sigmoid_prime(z_vector):
     Sigmoid functions derivative
     """
     return sigmoid(z_vector)*(1-sigmoid(z_vector))
-
-
-# Test NN
-nn = NeuralNetwork([784, 100, 10])
-(x_train, y_train), (x_test, y_test) = load_mnist_dataset()
-training_data = list(zip(x_train, y_train))
-test_data = list(zip(x_test, y_test))
-nn.stochastic_gradient_descent(training_data, 10, 10, 3.0, test_data)
-nn.visualize(list(test_data))
