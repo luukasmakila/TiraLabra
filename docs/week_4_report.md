@@ -3,7 +3,7 @@
 ## What has been going on?
 - Got the model working properly.
 - Model evaluation, tweaking hyperparameters. Best result so far is 97.44% accuracy against unseen data.
-- Added the "visualize" method. This method visualizes the predictions of the neural network. It shows the input (picture), prediction and also the label.
+- Added the "visualize" method. This method visualizes the predictions of the neural network. It shows the input (X), prediction and also the label.
 
 
 ## Plans for next week?

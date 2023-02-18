@@ -46,9 +46,8 @@ class NeuralNetwork:
             for bacth in mini_batches:
                 self.update_weights_and_biases(bacth, learning_rate)
             print(f"Epoch {i}")
-
-        if test_data:
-            print(f"Accuracy on unseen data: {self.evaluate_model(test_data)} / {test_data_length}")
+            if test_data:
+                print(f"Accuracy on unseen data: {self.evaluate_model(test_data)} / {test_data_length}")
 
     def update_weights_and_biases(self, batch, learning_rate):
         """
@@ -61,9 +60,9 @@ class NeuralNetwork:
         total_change_bias = [np.zeros(b.shape) for b in self.biases]
         total_change_weight = [np.zeros(w.shape) for w in self.weights]
 
-        for picture, number in batch:
+        for x, y in batch:
             # Calculate the change in weight and bias for a single training example with backrpopagation
-            change_to_bias, change_to_weight = self.backpropagation(picture, number)
+            change_to_bias, change_to_weight = self.backpropagation(x, y)
             total_change_bias = [tcb + ctb for tcb, ctb in zip(total_change_bias, change_to_bias)]
             total_change_weight = [tcw + ctw for tcw, ctw in zip(total_change_weight, change_to_weight)]
 
@@ -71,12 +70,13 @@ class NeuralNetwork:
         self.biases = [b - (learning_rate/len(batch)) * tcb for b, tcb in zip(self.biases, total_change_bias)]
         self.weights = [w - (learning_rate/len(batch)) * tcw for w, tcw in zip(self.weights, total_change_weight)]
 
-    def forwardpropagation(self, picture):
+    def forwardpropagation(self, x):
         """
         This is the forwardpropagation algorithm
+        x is the input, so a 784,1 matrix
         """
-        activation = picture
-        activations = [picture]
+        activation = x
+        activations = [x]
 
         z_vectors = []
 
@@ -89,17 +89,17 @@ class NeuralNetwork:
 
         return activations, z_vectors
 
-    def backpropagation(self, picture, number):
+    def backpropagation(self, x, y):
         """
         This the backpropagation algorithm
         """
         change_to_bias = [np.zeros(b.shape) for b in self.biases]
         change_to_weight = [np.zeros(w.shape) for w in self.weights]
 
-        activations, z_vectors = self.forwardpropagation(picture)
+        activations, z_vectors = self.forwardpropagation(x)
 
         # Calculate the gradient of the cost function
-        error = self.cost_derivative(activations[-1], number) * sigmoid_prime(z_vectors[-1])
+        error = self.cost_derivative(activations[-1], y) * sigmoid_prime(z_vectors[-1])
 
         # Modify the weights and biases in connections to the output layer
         change_to_bias[-1] = error
@@ -148,7 +148,6 @@ class NeuralNetwork:
             activations = self.feedforward(x)
             predictions = activations
 
-            #if np.argmax(predictions) != np.argmax(y):
             plt.imshow(x.reshape(28, 28), cmap='gray')
             plt.title(f'Prediction: {np.argmax(predictions)}, Real label: {np.argmax(y)}')
 
@@ -174,5 +173,5 @@ nn = NeuralNetwork([784, 100, 10])
 (x_train, y_train), (x_test, y_test) = load_mnist_dataset()
 training_data = list(zip(x_train, y_train))
 test_data = list(zip(x_test, y_test))
-nn.stochastic_gradient_descent(training_data, 30, 10, 3.0, test_data)
+nn.stochastic_gradient_descent(training_data, 10, 10, 3.0, test_data)
 nn.visualize(list(test_data))
