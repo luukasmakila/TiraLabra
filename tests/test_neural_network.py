@@ -44,4 +44,15 @@ def test_feedforward():
     result = mock_network.feedforward(test_input)
     assert np.allclose(result, expected_result), f"Expected {expected_result}, but got {result}"
 
-
+def test_cost_derivative():
+    # Create a random output and target values
+    output_layer_activations = np.array([[0.3], [0.7], [0.1]])
+    target_values = np.array([[1], [0], [1]])
+    # Compute the cost derivative using the neural network's method
+    nn = NeuralNetwork([3, 2, 1])
+    cost_derivative = nn.cost_derivative(output_layer_activations, target_values)
+    # Check that the shape of the result is correct
+    assert cost_derivative.shape == (3, 1)
+    # Check that the result is correct
+    expected_result = np.array([[-0.7], [0.7], [-0.9]])
+    assert np.allclose(cost_derivative, expected_result)

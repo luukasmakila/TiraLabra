@@ -28,4 +28,4 @@ nn.stochastic_gradient_descent(training_data=training_data,
                                learning_rate=learning_rate,
                                test_data=test_data)
 
-nn.visualize(list(test_data))
+nn.visualize(test_data)
