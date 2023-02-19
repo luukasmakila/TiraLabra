@@ -15,9 +15,9 @@ Run the following to start the program:
 python demo.py
 ```
 
-Let the program train the model and once the training is done, window will pop up where you can start visualizing the networks predicitions against the real labels.
+Let the program train the model and once the training is done, a window will pop up where you can start visualizing the networks predicitions against the real labels.
 
-Architecture of the network and other hyperparameters can be modified in the demo.py
+Architecture of the network and other hyperparameters can be modified in the demo.py file.
 
 ## Docs
 - [Project specification docs](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/spec_doc.md)
@@ -28,3 +28,4 @@ Architecture of the network and other hyperparameters can be modified in the dem
 - [Week 2](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_2_report.md)
 - [Week 3](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_3_report.md)
 - [Week 4](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_4_report.md)
+- [Week 5](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_5_report.md)
