@@ -9,7 +9,7 @@ architecture = [784, 100, 10]
 epochs = 10
 
 # Size of the mini-batches
-mini_batch_size = 10
+mini_batch_size = 5
 
 # Learning rate
 learning_rate = 3.0
