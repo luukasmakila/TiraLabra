@@ -21,6 +21,7 @@ Architecture of the network and other hyperparameters can be modified in the dem
 
 ## Docs
 - [Project specification docs](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/spec_doc.md)
+- [Test docs](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/test_doc.md)
 - [Test coverage](https://luukasmakila.github.io/neural-network-to-recognize-digits/)
 
 ## Weekly reports
