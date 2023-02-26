@@ -45,7 +45,7 @@ class NeuralNetwork:
             ]
             for bacth in mini_batches:
                 self.update_weights_and_biases(bacth, learning_rate)
-            print(f"Epoch {i}")
+            print(f"Epoch {i + 1}")
             if test_data:
                 print(f"Accuracy on unseen data: {self.evaluate_model(test_data)} / {test_data_length}")
 

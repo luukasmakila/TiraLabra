@@ -6,10 +6,10 @@ from helpers.load_data import load_mnist_dataset
 architecture = [784, 100, 10]
 
 # Number of training rounds
-epochs = 10
+epochs = 5
 
 # Size of the mini-batches
-mini_batch_size = 5
+mini_batch_size = 10
 
 # Learning rate
 learning_rate = 3.0
