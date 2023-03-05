@@ -22,6 +22,10 @@ Let the program train the model and once the training is done, a window will pop
 
 Architecture of the network and other hyperparameters can be modified in the demo.py file.
 
+## Neural Networks Learning Plot
+
+![Alt text](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/pictures/nn_improvements_plot.png "Neural Network Accuracy vs Epochs")
+
 ## Example of the predictions
 
 ![Alt text](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/pictures/nn_example_guess.png "Prediction vs Label")
