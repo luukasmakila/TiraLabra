@@ -1,7 +1,6 @@
 import random
 import numpy as np
 import matplotlib.pyplot as plt
-from helpers.load_data import load_mnist_dataset
 
 class NeuralNetwork:
 

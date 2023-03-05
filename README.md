@@ -44,3 +44,4 @@ Architecture of the network and other hyperparameters can be modified in the dem
 - [Week 4](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_4_report.md)
 - [Week 5](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_5_report.md)
 - [Week 6](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_6_report.md)
+- [Week 7](https://github.com/luukasmakila/neural-network-to-recognize-digits/blob/main/docs/week_7_report.md)
