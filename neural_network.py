@@ -47,7 +47,8 @@ class NeuralNetwork:
                 self.update_weights_and_biases(bacth, learning_rate)
             print(f"Epoch {i + 1}")
             if test_data:
-                print(f"Accuracy on unseen data: {self.evaluate_model(test_data)} / {test_data_length}")
+                accuracy = self.evaluate_model(test_data=test_data)
+                print(f"Accuracy on unseen data: {accuracy} / {test_data_length}")
 
     def update_weights_and_biases(self, batch, learning_rate):
         """
