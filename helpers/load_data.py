@@ -17,7 +17,7 @@ def load_mnist_dataset():
     x_train = [np.reshape(i, (784, 1)) for i in x_train]
     x_test = [np.reshape(i, (784, 1)) for i in x_test]
 
-    # Vecotrize the labeld data
+    # Vecotrize the labeled data
     y_train = [vectorize_result(i) for i in y_train]
     y_test = [vectorize_result(i) for i in y_test]
 

@@ -6,7 +6,7 @@ from helpers.load_data import load_mnist_dataset
 architecture = [784, 100, 10]
 
 # Number of training rounds
-epochs = 5
+epochs = 3
 
 # Size of the mini-batches
 mini_batch_size = 10
